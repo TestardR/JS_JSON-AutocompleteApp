@@ -15,7 +15,31 @@ const searchStates = searchText => {
     const regex = new RegExp(`^${searchText}`, 'gi');
     return state.name.match(regex) || state.abbr.match(regex);
   });
-  console.log(matches);
+
+  if (searchText.length === 0) {
+    matches = [];
+  }
+
+  outputHtml(matches);
+};
+
+// Show results in HTML
+const outputHtml = matches => {
+  if (matches.length > 0) {
+    const html = matches
+      .map(
+        match =>
+          `<div class="card card-body mb-1"> <h4>${match.name} (${
+            match.abbr
+          }) <span class="text-primary">${
+            match.capital
+          }</span></h4> <small>Lat: ${match.lat} / Long: ${
+            match.long
+          }</small> </div>`
+      )
+      .join('');
+    matchList.innerHTML = html;
+  }
 };
 
 window.addEventListener('DOMContentLoaded', getStates);
